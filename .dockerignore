@@ -1,0 +1,15 @@
+.git/
+.github/
+.venv/
+.idea/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+Data/train/
+Data/test/
+Data/clean/
+models/legacy/
+tests/
+ml/
+uploads/

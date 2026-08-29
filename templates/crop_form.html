@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Crop Recommendation &middot; CropCraft{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="h2 mb-2">Find the right crop for your field</h1>
+      <p class="text-body-secondary mb-4">
+        Enter a recent soil test and typical seasonal weather. Every field is required.
+      </p>
+
+      <form method="post" action="{{ url_for('crop_predict') }}" class="cc-card p-4" novalidate>
+        <div class="row g-3">
+          {% set fields = [
+            ('nitrogen',    'Nitrogen (N)',    'kg/ha', 0, 200, 1,    '90'),
+            ('phosphorous', 'Phosphorus (P)',  'kg/ha', 0, 200, 1,    '42'),
+            ('potassium',   'Potassium (K)',   'kg/ha', 0, 250, 1,    '43'),
+            ('ph',          'Soil pH',         '0-14',  0, 14, 0.01,  '6.5'),
+            ('rainfall',    'Rainfall',        'mm',    0, 1000, 0.01,'203'),
+            ('temperature', 'Temperature',     '&deg;C',  -10, 60, 0.01,'21'),
+            ('humidity',    'Relative humidity','%',    0, 100, 0.01, '82'),
+          ] %}
+          {% for name, label, unit, lo, hi, step, example in fields %}
+            <div class="col-sm-6">
+              <label for="{{ name }}" class="form-label fw-semibold">
+                {{ label }} <span class="text-body-secondary fw-normal">({{ unit | safe }})</span>
+              </label>
+              <input class="form-control" type="number" id="{{ name }}" name="{{ name }}"
+                     min="{{ lo }}" max="{{ hi }}" step="{{ step }}"
+                     placeholder="e.g. {{ example }}" required>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="d-flex align-items-center gap-3 mt-4">
+          <button type="submit" class="btn btn-cc btn-lg px-4">Recommend</button>
+          <span class="htmx-indicator spinner-border spinner-border-sm" role="status"></span>
+        </div>
+      </form>
+
+      <p class="text-body-secondary small mt-3 mb-0">
+        Ranges follow the training data. Values outside them are rejected rather than
+        silently extrapolated.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

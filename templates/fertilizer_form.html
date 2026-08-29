@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Fertilizer Advice &middot; CropCraft{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <h1 class="h2 mb-2">Correct your soil for the crop you are growing</h1>
+      <p class="text-body-secondary mb-4">
+        CropCraft compares your soil test against the published nutrient requirement
+        for that crop and advises on each gap.
+      </p>
+
+      <form method="post" action="{{ url_for('fertilizer_predict') }}" class="cc-card p-4" novalidate>
+        <div class="mb-3">
+          <label for="cropname" class="form-label fw-semibold">Crop you want to grow</label>
+          <select class="form-select" id="cropname" name="cropname" required>
+            {% for crop in crops %}
+              <option value="{{ crop }}">{{ crop | title }}</option>
+            {% endfor %}
+          </select>
+          <div class="form-text">{{ crops | length }} crops with published NPK requirements.</div>
+        </div>
+
+        <div class="row g-3">
+          {% set fields = [
+            ('nitrogen',    'Nitrogen (N)',   0, 200, '40'),
+            ('phosphorous', 'Phosphorus (P)', 0, 200, '60'),
+            ('potassium',   'Potassium (K)',  0, 250, '80'),
+          ] %}
+          {% for name, label, lo, hi, example in fields %}
+            <div class="col-sm-4">
+              <label for="{{ name }}" class="form-label fw-semibold">{{ label }}</label>
+              <input class="form-control" type="number" id="{{ name }}" name="{{ name }}"
+                     min="{{ lo }}" max="{{ hi }}" step="1"
+                     placeholder="e.g. {{ example }}" required>
+            </div>
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-cc btn-lg px-4 mt-4">Get advice</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

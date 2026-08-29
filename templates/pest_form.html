@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Pest Identification &middot; CropCraft{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <h1 class="h2 mb-2">Identify the pest in your field</h1>
+      <p class="text-body-secondary mb-4">
+        Upload a clear, close photo of the insect. JPEG, PNG or WebP, up to 8&nbsp;MB.
+      </p>
+
+      <form method="post" action="{{ url_for('pest_predict') }}"
+            enctype="multipart/form-data" class="cc-card p-4">
+        <div class="mb-3">
+          <label for="image" class="form-label fw-semibold">Pest photo</label>
+          <input class="form-control" type="file" id="image" name="image"
+                 accept="image/jpeg,image/png,image/webp" required>
+        </div>
+
+        <img id="cc-preview" class="img-fluid rounded mb-3 d-none" alt="Selected photo preview">
+
+        <div class="d-flex align-items-center gap-3">
+          <button type="submit" class="btn btn-cc btn-lg px-4">Identify</button>
+          <span class="htmx-indicator spinner-border spinner-border-sm" role="status"></span>
+        </div>
+      </form>
+
+      <div class="cc-card p-4 mt-4">
+        <h2 class="h6">CropCraft can recognise</h2>
+        <p class="text-body-secondary small mb-0">
+          Aphids, armyworm, beetles, bollworm, earthworm, grasshopper, mites,
+          mosquito, sawfly and stem borer. Anything else will be forced into one of
+          those ten, so treat a low-confidence result with suspicion.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

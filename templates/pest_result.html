@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block title %}{{ result.name }} &middot; CropCraft{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <div class="cc-card p-4 mb-4">
+        <p class="text-body-secondary text-uppercase small mb-1">Identified</p>
+        <h1 class="h2 mb-3">
+          {{ result.name }}
+          {% if result.beneficial %}
+            <span class="badge bg-success align-middle fs-6">Beneficial</span>
+          {% endif %}
+        </h1>
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="progress flex-grow-1" style="height: 0.6rem;"
+               role="progressbar" aria-label="Model confidence"
+               aria-valuenow="{{ (result.confidence * 100) | round }}"
+               aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar {{ 'bg-success' if result.confident else 'bg-warning' }}"
+                 style="width: {{ result.confidence * 100 }}%"></div>
+          </div>
+          <span class="cc-confidence fw-semibold">{{ result.confidence | percent }}</span>
+        </div>
+
+        {% if not result.confident %}
+          <div class="alert alert-warning" role="alert">
+            <strong>Low confidence.</strong> The next most likely match was
+            {{ result.runner_up }} at {{ result.runner_up_confidence | percent }}.
+            Take another photo closer to the insect, or have the identification
+            confirmed before treating.
+          </div>
+        {% endif %}
+
+        <p class="mb-2">{{ result.description }}</p>
+        <p class="text-body-secondary mb-0"><strong>Damage:</strong> {{ result.damage }}</p>
+      </div>
+
+      {% if result.beneficial %}
+        <div class="cc-card p-4 mb-4">
+          <h2 class="h5">Do not treat this</h2>
+          <p class="text-body-secondary mb-0">
+            Earthworms improve soil structure, aeration and nutrient cycling. Spraying
+            for them damages the soil this project exists to protect.
+          </p>
+        </div>
+      {% endif %}
+
+      {% if result.cultural_controls %}
+        <div class="cc-card p-4 mb-4">
+          <h2 class="h5 mb-3">{{ 'What to do' if result.beneficial else 'Try these first' }}</h2>
+          <ul class="mb-0">
+            {% for control in result.cultural_controls %}
+              <li class="mb-2">{{ control }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if result.pesticides %}
+        <h2 class="h5 mb-3">Registered products</h2>
+        <div class="row g-3">
+          {% for product in result.pesticides %}
+            <div class="col-sm-6 col-lg-4">
+              <div class="cc-card h-100">
+                <img class="card-img-top cc-pesticide-image w-100" data-hide-on-error
+                     src="{{ url_for('static', path=product.image.replace('static/', '')) }}"
+                     alt="{{ product.name }}" loading="lazy"
+                    >
+                <div class="p-3">
+                  <h3 class="h6 mb-1">{{ product.name | title }}</h3>
+                  <p class="text-body-secondary small mb-0">Dose: {{ product.dose }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <p class="text-body-secondary small mt-3">
+          Always follow the product label and the pre-harvest interval. Rotate
+          chemical groups to slow resistance.
+        </p>
+      {% endif %}
+
+      <a class="btn btn-link px-0 mt-3" href="{{ url_for('pest_form') }}">&larr; Identify another pest</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

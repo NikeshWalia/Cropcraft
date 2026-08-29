@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }} &middot; CropCraft{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="cc-card p-4">
+        <h1 class="h3 mb-3">{{ title }}</h1>
+        {% if problems %}
+          <ul class="mb-4">
+            {% for problem in problems %}
+              <li>{{ problem }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <a class="btn btn-cc" href="{{ url_for('index') }}">Back to start</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

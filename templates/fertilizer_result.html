@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block title %}Fertilizer advice for {{ result.crop | title }} &middot; CropCraft{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <p class="text-body-secondary text-uppercase small mb-1">Fertilizer advice</p>
+      <h1 class="h2 mb-4">{{ result.crop | title }}</h1>
+
+      {% set badges = {'high': 'warning text-dark', 'low': 'info text-dark', 'ok': 'success'} %}
+      {% set verdicts = {'high': 'Too high', 'low': 'Too low', 'ok': 'On target'} %}
+
+      {% for nutrient in result.nutrients %}
+        <section class="cc-card p-4 mb-3 cc-status-{{ nutrient.status }}">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+            <h2 class="h5 mb-0">{{ nutrient.nutrient }} ({{ nutrient.symbol }})</h2>
+            <span class="badge bg-{{ badges[nutrient.status] }}">{{ verdicts[nutrient.status] }}</span>
+          </div>
+
+          <p class="text-body-secondary small mb-3">
+            You measured <strong>{{ nutrient.measured }}</strong> kg/ha;
+            {{ result.crop }} wants <strong>{{ nutrient.desired }}</strong> kg/ha.
+            {% if nutrient.status != 'ok' %}
+              That is a gap of <strong>{{ nutrient.difference }}</strong> kg/ha.
+            {% endif %}
+          </p>
+
+          <p class="fw-semibold mb-2">{{ nutrient.headline }}</p>
+
+          {% if nutrient.tips %}
+            <ol class="mb-0 small">
+              {% for tip in nutrient.tips %}
+                <li class="mb-2">{{ tip }}</li>
+              {% endfor %}
+            </ol>
+          {% else %}
+            <p class="mb-0 small text-body-secondary">No action needed for this nutrient.</p>
+          {% endif %}
+        </section>
+      {% endfor %}
+
+      <p class="text-body-secondary small mt-4">
+        Requirements are drawn from The Fertilizer Association of India and the Indian
+        Institute of Water Management. Confirm dosing against the product label.
+      </p>
+      <a class="btn btn-link px-0" href="{{ url_for('fertilizer_form') }}">&larr; Check another crop</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

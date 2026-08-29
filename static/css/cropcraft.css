@@ -1,0 +1,166 @@
+/* CropCraft 2.0 theme.
+   Keeps the gold-on-dark identity of the 1.x template but rebuilt on
+   Bootstrap 5 custom properties, so it adapts to light and dark schemes. */
+
+:root {
+  --cc-gold: #c79c60;
+  --cc-gold-bright: #e0b878;
+  --cc-ink: #14130f;
+  --cc-leaf: #4a7c4e;
+  --bs-body-font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+[data-bs-theme="dark"] {
+  --cc-surface: #1c1a16;
+  --cc-border: #33302a;
+}
+
+[data-bs-theme="light"] {
+  --cc-surface: #ffffff;
+  --cc-border: #e3ded4;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* --- header -------------------------------------------------------- */
+.cc-navbar {
+  background: var(--cc-ink);
+  border-bottom: 2px solid var(--cc-gold);
+}
+
+.cc-brand {
+  color: var(--cc-gold);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.cc-brand:hover,
+.cc-brand:focus {
+  color: var(--cc-gold-bright);
+}
+
+.cc-navbar .nav-link {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 500;
+}
+
+.cc-navbar .nav-link:hover,
+.cc-navbar .nav-link:focus {
+  color: var(--cc-gold-bright);
+}
+
+.cc-navbar .nav-link.active {
+  color: var(--cc-gold);
+  border-bottom: 2px solid var(--cc-gold);
+}
+
+/* --- hero ---------------------------------------------------------- */
+.cc-hero {
+  background:
+    linear-gradient(rgba(20, 19, 15, 0.82), rgba(20, 19, 15, 0.92)),
+    url("../img/table-set.jpeg") center / cover no-repeat;
+  color: #f4f1ea;
+  padding: 5rem 0;
+}
+
+.cc-hero h1 {
+  font-weight: 700;
+}
+
+.cc-hero .cc-accent {
+  color: var(--cc-gold);
+}
+
+/* --- cards --------------------------------------------------------- */
+.cc-card {
+  background: var(--cc-surface);
+  border: 1px solid var(--cc-border);
+  border-radius: 0.75rem;
+  height: 100%;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+a.cc-card:hover,
+a.cc-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-card {
+    transition: none;
+  }
+  a.cc-card:hover,
+  a.cc-card:focus-visible {
+    transform: none;
+  }
+}
+
+.cc-card-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* --- buttons ------------------------------------------------------- */
+.btn-cc {
+  background: var(--cc-ink);
+  color: var(--cc-gold);
+  border: 1px solid var(--cc-gold);
+  font-weight: 600;
+}
+
+.btn-cc:hover,
+.btn-cc:focus {
+  background: var(--cc-gold);
+  color: var(--cc-ink);
+}
+
+/* --- nutrient status ----------------------------------------------- */
+.cc-status-high {
+  border-left: 4px solid var(--bs-warning);
+}
+
+.cc-status-low {
+  border-left: 4px solid var(--bs-info);
+}
+
+.cc-status-ok {
+  border-left: 4px solid var(--bs-success);
+}
+
+/* --- results ------------------------------------------------------- */
+.cc-crop-image {
+  max-height: 22rem;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+.cc-pesticide-image {
+  height: 11rem;
+  object-fit: contain;
+  background: #fff;
+  padding: 0.5rem;
+}
+
+.cc-confidence {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shown by HTMX while a prediction is in flight. */
+.htmx-indicator {
+  display: none;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+  display: inline-block;
+}

@@ -1,63 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="en" data-bs-theme="light">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Irrigreat</title>
-
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,700' rel='stylesheet'
-    type='text/css'>
-   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@500&display=swap" rel="stylesheet">
-  <link href='http://fonts.googleapis.com/css?family=Damion' rel='stylesheet' type='text/css'>
-  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='css/templatemo-style.css') }}" rel="stylesheet">
-  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon" />
-  <script type="text/JavaScript" src="{{ url_for('static', filename='js/cities.js') }}"></script>
-  <style>
-    html body {
-      background-color: #e4e4e4;
-  }
-  </style>
+  <title>{% block title %}CropCraft{% endblock %}</title>
+  <meta name="description" content="Crop, fertilizer and pesticide recommendations for Indian farms.">
+  <link rel="icon" href="{{ url_for('static', path='img/favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='vendor/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/cropcraft.css') }}">
 </head>
-
 <body>
-  <!-- Preloader -->
-  <div id="loader-wrapper">
-    <div id="loader"></div>
-    <div class="loader-section section-left"></div>
-    <div class="loader-section section-right"></div>
-  </div>
-  <!-- End Preloader -->
-  <div class="tm-top-header">
-    <div class="container">
-      <div class="row">
-        <div class="tm-top-header-inner">
-          <div class="tm-logo-container">
-
-            <h1 class="tm-site-name tm-handwriting-font">CropCraft</h1>
-          </div>
-          <div class="mobile-menu-icon">
-            <i class="fa fa-bars"></i>
-          </div>
-          <nav class="tm-nav">
-            <ul>
-              {% block nav %}
-              {% endblock %}
-            </ul>
-          </nav>
+  <header>
+    <nav class="navbar navbar-expand-md cc-navbar" aria-label="Main navigation">
+      <div class="container">
+        <a class="navbar-brand cc-brand fs-3" href="{{ url_for('index') }}">CropCraft</a>
+        <button class="navbar-toggler border-secondary" type="button"
+                data-bs-toggle="collapse" data-bs-target="#cc-nav"
+                aria-controls="cc-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="cc-nav">
+          <ul class="navbar-nav ms-auto">
+            {% set links = [
+              ('home', 'Home', url_for('index')),
+              ('crop', 'Crop', url_for('crop_form')),
+              ('fertilizer', 'Fertilizer', url_for('fertilizer_form')),
+              ('pesticide', 'Pesticide', url_for('pest_form')),
+            ] %}
+            {% for key, label, href in links %}
+              <li class="nav-item">
+                <a class="nav-link{% if active == key %} active{% endif %}"
+                   href="{{ href }}"
+                   {% if active == key %}aria-current="page"{% endif %}>{{ label }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+          <button class="btn btn-sm btn-outline-secondary ms-md-3 mt-2 mt-md-0"
+                  id="cc-theme-toggle" type="button" aria-label="Toggle colour theme">
+            <span aria-hidden="true">&#9789;</span>
+          </button>
         </div>
       </div>
+    </nav>
+  </header>
+
+  <main>
+    {% block body %}{% endblock %}
+  </main>
+
+  <footer class="mt-5 py-4 border-top">
+    <div class="container d-flex flex-wrap justify-content-between gap-2 small text-body-secondary">
+      <span>CropCraft &middot; precision agriculture for Indian farms</span>
+      <span>Recommendations are advisory. Confirm with your local agricultural extension officer.</span>
     </div>
-  </div>
-  {% block body %} {% endblock %}
-  <!-- JS -->
-  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.11.2.min.js') }}"></script> <!-- jQuery -->
-  <script type="text/javascript" src="{{ url_for('static', filename='js/templatemo-script.js') }}"></script> <!-- Templatemo Script -->
+  </footer>
 
+  <script src="{{ url_for('static', path='vendor/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', path='vendor/htmx.min.js') }}"></script>
+  <script src="{{ url_for('static', path='js/cropcraft.js') }}"></script>
 </body>
-
 </html>

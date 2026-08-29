@@ -1,0 +1,152 @@
+{
+ "aphids": [
+  {
+   "image": "static/img/pesticide/aphids/banzo.jpg",
+   "name": "banzo",
+   "dose": "330 ml/acre"
+  },
+  {
+   "image": "static/img/pesticide/aphids/derby.jpg",
+   "name": "derby",
+   "dose": "600 gm/Ha"
+  },
+  {
+   "image": "static/img/pesticide/aphids/fulstop-d.jpg",
+   "name": "fulstop-d",
+   "dose": "1000 ml/Ha"
+  },
+  {
+   "image": "static/img/pesticide/aphids/intice.jpg",
+   "name": "intice",
+   "dose": "30-35 gm/Ha"
+  },
+  {
+   "image": "static/img/pesticide/aphids/ultimo-200-sl.jpg",
+   "name": "Ultimo 200 SL",
+   "dose": "100-150 ml/Ha"
+  },
+  {
+   "image": "static/img/pesticide/aphids/ultimo-super.jpg",
+   "name": "Ultimo Super",
+   "dose": "60-75 ml/Ha"
+  }
+ ],
+ "armyworm": [
+  {
+   "image": "static/img/pesticide/armyworm/perfek-315-ec.jpg",
+   "name": "perfek",
+   "dose": "2.5-3.5 Tbsp/ 16 L"
+  },
+  {
+   "image": "static/img/pesticide/armyworm/prudent-50-ec.jpg",
+   "name": "prudent",
+   "dose": "500 gm/L"
+  }
+ ],
+ "beetle": [
+  {
+   "image": "static/img/pesticide/beetle/smash.jpg",
+   "name": "smash",
+   "dose": "1.0-3.0 Tbsp/16 L"
+  }
+ ],
+ "bollworm": [
+  {
+   "image": "static/img/pesticide/bollworm/auzar-25-ec.jpg",
+   "name": "auzar",
+   "dose": "160-280 ml/Ha"
+  },
+  {
+   "image": "static/img/pesticide/bollworm/bioclaim.jpg",
+   "name": "bioclaim",
+   "dose": "220 gm/Ha"
+  },
+  {
+   "image": "static/img/pesticide/bollworm/fulstop-d.jpg",
+   "name": "fulstop-d",
+   "dose": "1000 ml/Ha"
+  },
+  {
+   "image": "static/img/pesticide/bollworm/kozuka.jpg",
+   "name": "kozuka",
+   "dose": "600-100 ml/Ha"
+  }
+ ],
+ "earthworm": [
+  {
+   "image": "static/img/pesticide/earthworm/biostadt-malathion-57-ec.jpg",
+   "name": "malathion",
+   "dose": "570 gm/L"
+  },
+  {
+   "image": "static/img/pesticide/earthworm/smash.jpg",
+   "name": "smash",
+   "dose": "1.0-4.5 Tbsp/16 L"
+  }
+ ],
+ "grasshopper": [
+  {
+   "image": "static/img/pesticide/grasshopper/biostadt-malathion-57-ec.jpg",
+   "name": "malathion",
+   "dose": "570 gm/L"
+  },
+  {
+   "image": "static/img/pesticide/grasshopper/perfek-315-ec.jpg",
+   "name": "perfek",
+   "dose": "2.5-3.5 Tbsp/16 L"
+  }
+ ],
+ "mites": [
+  {
+   "image": "static/img/pesticide/mites/bioclaim.jpg",
+   "name": "bioclaim",
+   "dose": "220 gm/Ha"
+  },
+  {
+   "image": "static/img/pesticide/mites/biostadt-malathion-57-ec.jpg",
+   "name": "malathion",
+   "dose": "570 gm/L"
+  },
+  {
+   "image": "static/img/pesticide/mites/inclaim.jpg",
+   "name": "inclaim",
+   "dose": "200 gm/Ha"
+  },
+  {
+   "image": "static/img/pesticide/mites/ingage.jpg",
+   "name": "ingage",
+   "dose": "600 gm/Ha"
+  }
+ ],
+ "mosquito": [
+  {
+   "image": "static/img/pesticide/mosquito/evident.jpg",
+   "name": "evident",
+   "dose": "400-500 gm/Ha"
+  },
+  {
+   "image": "static/img/pesticide/mosquito/thiomax.jpg",
+   "name": "thiomax",
+   "dose": "100 gm/Ha"
+  }
+ ],
+ "sawfly": [
+  {
+   "image": "static/img/pesticide/sawfly/krush.jpg",
+   "name": "krush",
+   "dose": "1250 ml/Ha"
+  }
+ ],
+ "stem_borer": [
+  {
+   "image": "static/img/pesticide/stem_borer/cartop.jpg",
+   "name": "cartop",
+   "dose": "1000 ml/Ha"
+  },
+  {
+   "image": "static/img/pesticide/stem_borer/voter.jpg",
+   "name": "voter",
+   "dose": "24 gm/Ha"
+  }
+ ]
+}

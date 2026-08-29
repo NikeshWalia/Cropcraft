@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block title %}{{ result.crop | title }} &middot; CropCraft{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <div class="cc-card p-4 mb-4">
+        <p class="text-body-secondary text-uppercase small mb-1">Recommended crop</p>
+        <h1 class="display-5 mb-3">{{ result.crop | title }}</h1>
+
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="progress flex-grow-1" style="height: 0.6rem;"
+               role="progressbar" aria-label="Model confidence"
+               aria-valuenow="{{ (result.confidence * 100) | round }}"
+               aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar bg-success" style="width: {{ result.confidence * 100 }}%"></div>
+          </div>
+          <span class="cc-confidence fw-semibold">{{ result.confidence | percent }} confident</span>
+        </div>
+
+        <img class="cc-crop-image mb-3" data-hide-on-error
+             src="{{ url_for('static', path='img/crop/' ~ result.crop ~ '.jpg') }}"
+             alt="{{ result.crop | title }} crop" loading="lazy">
+
+        <a class="btn btn-cc" href="{{ url_for('fertilizer_form') }}?crop={{ npk_crop }}">
+          Now check fertilizer for {{ npk_crop | title }}
+        </a>
+      </div>
+
+      {% if result.alternatives %}
+        <div class="cc-card p-4 mb-4">
+          <h2 class="h5 mb-3">Other crops that suit these conditions</h2>
+          <ul class="list-group list-group-flush">
+            {% for alternative in result.alternatives %}
+              <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0">
+                <span>{{ alternative.crop | title }}</span>
+                <span class="cc-confidence text-body-secondary">{{ alternative.confidence | percent }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <details class="cc-card p-4">
+        <summary class="fw-semibold">Readings you entered</summary>
+        <dl class="row mb-0 mt-3 small">
+          {% set entered = [
+            ('Nitrogen', readings.nitrogen, 'kg/ha'),
+            ('Phosphorus', readings.phosphorous, 'kg/ha'),
+            ('Potassium', readings.potassium, 'kg/ha'),
+            ('Soil pH', readings.ph, ''),
+            ('Rainfall', readings.rainfall, 'mm'),
+            ('Temperature', readings.temperature, '&deg;C'),
+            ('Humidity', readings.humidity, '%'),
+          ] %}
+          {% for label, value, unit in entered %}
+            <dt class="col-6 col-sm-4 fw-normal text-body-secondary">{{ label }}</dt>
+            <dd class="col-6 col-sm-8">{{ value }} {{ unit | safe }}</dd>
+          {% endfor %}
+        </dl>
+      </details>
+
+      <a class="btn btn-link px-0 mt-3" href="{{ url_for('crop_form') }}">&larr; Try different readings</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

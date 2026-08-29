@@ -1,0 +1,24 @@
+{
+  "backbone": "MobileNetV2 (ImageNet)",
+  "image_size": 224,
+  "seed": 42,
+  "epochs_head": 30,
+  "epochs_finetune": 18,
+  "holdout_accuracy": 0.8932,
+  "holdout_top3_accuracy": 1.0,
+  "holdout_loss": 0.4127,
+  "per_class_recall": {
+    "aphids": 0.889,
+    "armyworm": 1.0,
+    "beetle": 0.778,
+    "bollworm": 0.929,
+    "earthworm": 1.0,
+    "grasshopper": 1.0,
+    "mites": 0.889,
+    "mosquito": 1.0,
+    "sawfly": 0.4,
+    "stem_borer": 1.0
+  },
+  "keras_version": "3.15.1",
+  "tensorflow_version": "2.21.0"
+}

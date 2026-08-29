@@ -1,0 +1,17 @@
+{
+  "selected_model": "gaussian_nb",
+  "cv_accuracy": {
+    "random_forest": 0.9931818181818182,
+    "hist_gradient_boosting": 0.9920454545454545,
+    "svc_rbf": 0.9789772727272726,
+    "knn": 0.965340909090909,
+    "gaussian_nb": 0.9948863636363636,
+    "voting_ensemble": 0.9914772727272727
+  },
+  "holdout_accuracy": 0.9954545454545455,
+  "holdout_macro_f1": 0.9954431533378901,
+  "n_train": 1760,
+  "n_test": 440,
+  "seed": 42,
+  "sklearn_version": "1.9.0"
+}

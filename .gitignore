@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Model artifacts (rebuild with `python -m ml.train_crop` / `ml.train_pest`).
+# The *_metrics.json and pest_labels.json files are small and are committed, so
+# the published accuracy figures travel with the source.
+models/**/*.keras
+models/**/*.joblib
+models/**/*.h5
+models/**/*.pkl
+models/legacy/
+
+# Generated dataset splits
+Data/clean/
+
+# Runtime
+uploads/
+*.log
+.env
