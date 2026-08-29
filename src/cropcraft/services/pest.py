@@ -53,7 +53,13 @@ def _load_model() -> Any:
             f"{settings.pest_model_path.name} is missing. Build it with: "
             "python -m ml.prepare_dataset && python -m ml.train_pest"
         )
-    import keras  # noqa: PLC0415 -- deliberately deferred
+    try:
+        import keras  # noqa: PLC0415 -- deliberately deferred
+    except ImportError as exc:  # pragma: no cover -- needs a TF-less install
+        raise ModelUnavailableError(
+            "TensorFlow is not installed, so pest identification is unavailable. "
+            'Install it with: uv pip install -e ".[ml]"'
+        ) from exc
 
     return keras.models.load_model(settings.pest_model_path)
 

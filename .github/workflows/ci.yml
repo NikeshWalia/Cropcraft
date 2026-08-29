@@ -10,14 +10,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  UV_PYTHON_DOWNLOADS: never
-
 jobs:
   test:
     name: Lint and test
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Fine-tuning MobileNetV2 takes roughly 20 minutes on a CPU runner, so the
+    # ceiling has to clear that comfortably on a cold cache.
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v5
@@ -26,41 +25,75 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-
-      - name: Set up Python
-        run: uv python install 3.13
+          python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --extra dev --extra ml
+        run: |
+          uv venv
+          uv pip install -e ".[ml,dev]"
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Lint
         run: |
-          uv run ruff check src ml tests
-          uv run ruff format --check src ml tests
+          ruff check src ml tests
+          ruff format --check src ml tests
 
-      # The model artifacts are not committed, so CI rebuilds them. The crop
-      # model trains in seconds; the pest model needs the image dataset.
+      # Model artifacts are build outputs and are not committed, so CI rebuilds
+      # them from the committed datasets. The pest model is cached against the
+      # training scripts and the images they consume; change either and it
+      # retrains.
+      - name: Restore trained models
+        id: model-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            models
+            Data/clean
+          key: models-${{ runner.os }}-py313-${{ hashFiles('ml/*.py', 'Data/**/*.jpg', 'Data/*.csv') }}
+
       - name: Build the crop model
-        run: uv run python -m ml.train_crop
+        if: steps.model-cache.outputs.cache-hit != 'true'
+        run: python -m ml.train_crop
 
       - name: Build the pest dataset and model
-        run: |
-          uv run python -m ml.prepare_dataset
-          uv run python -m ml.train_pest
+        if: steps.model-cache.outputs.cache-hit != 'true'
         env:
           TF_CPP_MIN_LOG_LEVEL: "2"
+        run: |
+          python -m ml.prepare_dataset
+          python -m ml.train_pest
 
       - name: Test
-        run: uv run pytest --cov=cropcraft --cov-report=term-missing
+        run: pytest --cov=cropcraft --cov-report=term-missing
 
   docker:
     name: Build image
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     steps:
       - uses: actions/checkout@v5
 
       - uses: docker/setup-buildx-action@v3
+
+      # The image COPYs models/, so it needs artifacts present. Building them
+      # here keeps this job independent of the test job's cache.
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          python-version: "3.13"
+
+      - name: Build the crop model
+        run: |
+          uv venv
+          # No ml extra here: train_crop only needs scikit-learn, and pulling
+          # TensorFlow in would cost a 600 MB download for nothing.
+          uv pip install -e .
+          .venv/bin/python -m ml.train_crop
+          # The pest model is not needed to prove the image builds; placeholders
+          # satisfy the Dockerfile COPY without a 20-minute train.
+          touch models/pest_classifier.keras models/pest_labels.json
 
       - name: Build
         uses: docker/build-push-action@v6

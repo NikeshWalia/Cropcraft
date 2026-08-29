@@ -21,10 +21,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-ml = [
-    "tensorflow>=2.21",
-    "matplotlib>=3.10",
-]
+# TensorFlow is needed to train *and* to serve the pest classifier.
+ml = ["tensorflow>=2.21"]
 dev = [
     "pytest>=8.4",
     "pytest-cov>=7.0",

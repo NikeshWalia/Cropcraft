@@ -11,12 +11,13 @@ ENV UV_COMPILE_BYTECODE=1 \
 
 WORKDIR /app
 
-# Dependencies resolve from pyproject alone, so this layer caches across
-# source edits.
+# Dependencies resolve from pyproject alone, so this layer caches across source
+# edits. The ml extra brings TensorFlow, which the pest endpoint needs at serving
+# time, not only for training -- without it /predict/pesticide raises ImportError.
 COPY pyproject.toml README.md ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv venv /opt/venv && \
-    VIRTUAL_ENV=/opt/venv uv pip install -r pyproject.toml
+    VIRTUAL_ENV=/opt/venv uv pip install -r pyproject.toml --extra ml
 
 COPY src/ ./src/
 RUN --mount=type=cache,target=/root/.cache/uv \

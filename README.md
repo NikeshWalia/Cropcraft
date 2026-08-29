@@ -27,12 +27,18 @@ python -m cropcraft --reload      # http://127.0.0.1:8000
 
 Interactive API docs are at `/docs`.
 
-With Docker:
+With Docker. The image copies `models/` rather than training inside the build, so
+run the two training commands above first:
 
 ```bash
 docker build -t cropcraft .
 docker run --rm -p 8000:8000 cropcraft
 ```
+
+The image carries TensorFlow, which the pest endpoint needs at serving time, so it
+is large -- about 3.5 GB. Dropping `--extra ml` from the Dockerfile gives a far
+smaller image that still serves crop and fertilizer recommendations; pest
+identification then returns 503 explaining what to install, rather than failing.
 
 ---
 

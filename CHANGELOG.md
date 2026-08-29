@@ -43,6 +43,16 @@ accuracy figures were not measured on held-out data.
 - **Static asset paths contained a space.** `static/img/pesticide/stem borer`
   produced `src=".../stem borer/cartop.jpg"`, an invalid URL. Renamed to
   `stem_borer`.
+- **Asset paths broke once the package was installed.** The project root was
+  found by walking up from `__file__`, which only holds while the package sits
+  in `src/`. Installed into `site-packages` -- the container layout -- the walk
+  landed in the virtualenv and startup failed on a missing `static` directory.
+  Resolution now prefers an explicit `CROPCRAFT_PROJECT_ROOT`, then the source
+  layout, then the working directory.
+- **The container image omitted TensorFlow.** The Dockerfile installed base
+  dependencies only, so pest identification raised `ImportError` at runtime. The
+  image now carries the `ml` extra, and a missing TensorFlow returns a 503 that
+  says what to install rather than a traceback.
 
 ### Fixed — security
 
@@ -84,6 +94,9 @@ accuracy figures were not measured on held-out data.
 - Test suite, GitHub Actions CI that rebuilds both models from the committed
   datasets, and a multi-stage Dockerfile running as a non-root user.
 - `LICENSE`, `.env.example` and this changelog.
+- A scoped Content-Security-Policy exception for `/docs` and `/redoc`, which
+  FastAPI serves from a CDN with a self-bootstrapping inline script; the strict
+  application policy would otherwise blank them out.
 
 ### Changed
 
